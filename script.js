@@ -173,3 +173,49 @@ if (contactForm) {
         }
     });
 }
+// 7. Payment Modal Logic
+const paymentModal = document.getElementById('paymentModal');
+const openPaymentBtn = document.getElementById('openPaymentBtn');
+const closePaymentBtn = document.getElementById('closePaymentBtn');
+const modalOverlay = document.getElementById('modalOverlay');
+const copyUpiBtn = document.getElementById('copyUpiBtn');
+const upiIdElement = document.getElementById('upiId');
+const donePaymentBtn = document.getElementById('donePaymentBtn');
+
+if (openPaymentBtn && paymentModal) {
+    // Open Modal
+    openPaymentBtn.addEventListener('click', () => {
+        paymentModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    });
+
+    // Close Modal
+    const closeModal = () => {
+        paymentModal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    };
+
+    closePaymentBtn.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', closeModal);
+    donePaymentBtn.addEventListener('click', closeModal);
+
+    // Copy UPI ID
+    if (copyUpiBtn && upiIdElement) {
+        copyUpiBtn.addEventListener('click', () => {
+            const upiText = upiIdElement.textContent;
+            navigator.clipboard.writeText(upiText).then(() => {
+                // Visual feedback
+                const originalIcon = copyUpiBtn.innerHTML;
+                copyUpiBtn.innerHTML = '<i class="fas fa-check"></i>';
+                copyUpiBtn.style.color = '#10b981';
+
+                setTimeout(() => {
+                    copyUpiBtn.innerHTML = originalIcon;
+                    copyUpiBtn.style.color = '';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
+        });
+    }
+}
