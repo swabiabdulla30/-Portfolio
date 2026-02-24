@@ -181,6 +181,7 @@ const modalOverlay = document.getElementById('modalOverlay');
 const copyUpiBtn = document.getElementById('copyUpiBtn');
 const upiIdElement = document.getElementById('upiId');
 const donePaymentBtn = document.getElementById('donePaymentBtn');
+const razorpayBtn = document.getElementById('razorpayBtn');
 
 if (openPaymentBtn && paymentModal) {
     // Open Modal
@@ -198,6 +199,66 @@ if (openPaymentBtn && paymentModal) {
     closePaymentBtn.addEventListener('click', closeModal);
     modalOverlay.addEventListener('click', closeModal);
     donePaymentBtn.addEventListener('click', closeModal);
+
+    // Razorpay Integration
+    if (razorpayBtn) {
+        razorpayBtn.addEventListener('click', async () => {
+            try {
+                razorpayBtn.disabled = true;
+                razorpayBtn.innerHTML = 'Processing... <i class="fas fa-spinner fa-spin"></i>';
+
+                // 1. Create Order on Backend
+                const response = await fetch('/api/razorpay', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        amount: 500, // Fixed advance amount for now
+                        currency: 'INR'
+                    })
+                });
+
+                const order = await response.json();
+
+                if (!order.id) throw new Error('Failed to create order');
+
+                // 2. Open Razorpay Checkout
+                const options = {
+                    key: 'rzp_test_SJz1Fh6gtP2Szk', // Using provided test key
+                    amount: order.amount,
+                    currency: order.currency,
+                    name: 'Sabiyy Portfolio',
+                    description: 'Project Advance Payment',
+                    order_id: order.id,
+                    handler: function (response) {
+                        alert('Payment Successful! ID: ' + response.razorpay_payment_id);
+                        closeModal();
+                        window.location.href = '#contact';
+                    },
+                    prefill: {
+                        name: document.getElementById('name')?.value || '',
+                        email: document.getElementById('email')?.value || ''
+                    },
+                    theme: {
+                        color: '#3b82f6'
+                    }
+                };
+
+                const rzp = new Razorpay(options);
+                rzp.open();
+
+                rzp.on('payment.failed', function (response) {
+                    alert('Payment Failed: ' + response.error.description);
+                });
+
+            } catch (error) {
+                console.error('Payment Error:', error);
+                alert('Something went wrong. Please try again or use the manual payment method.');
+            } finally {
+                razorpayBtn.disabled = false;
+                razorpayBtn.innerHTML = 'Pay with Razorpay <i class="fas fa-credit-card"></i>';
+            }
+        });
+    }
 
     // Copy UPI ID
     if (copyUpiBtn && upiIdElement) {

@@ -318,13 +318,22 @@
                     <p>Standard advance is 25% of the projected cost. Contact me first if you haven't received a quote.
                     </p>
                 </div>
+
+                <div class="razorpay-container" style="margin-bottom: 1.5rem;">
+                    <button class="btn primary-btn done-btn" id="razorpayBtn">
+                        Pay with Razorpay <i class="fas fa-credit-card"></i>
+                    </button>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">Secure test payment
+                        (₹500 advance)</p>
+                </div>
             </div>
 
-            <a href="#contact" class="btn primary-btn done-btn" id="donePaymentBtn">I've Made the Payment</a>
+            <a href="#contact" class="btn secondary-btn done-btn" id="donePaymentBtn">I've Made the Payment Manually</a>
         </div>
     </div>
 
     <!-- Scripts -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="script.js"></script>
 </body>
 
