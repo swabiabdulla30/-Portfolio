@@ -17,10 +17,12 @@ export default async function handler(req, res) {
         // 1. Create a transporter object using standard SMTP transport
         // You will need to add EMAIL_USER and EMAIL_PASS to your Vercel Environment Variables
         const transporter = nodemailer.createTransport({
-            service: 'gmail', // You can change this to your email provider
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
             auth: {
-                user: process.env.EMAIL_USER, // e.g., 'swabiabdulla30@gmail.com'
-                pass: process.env.EMAIL_PASS, // Your Gmail App Password
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS,
             },
         });
 
