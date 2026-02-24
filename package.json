@@ -1,0 +1,19 @@
+{
+  "name": "sabiyy-portfolio",
+  "version": "1.0.0",
+  "description": "Personal portfolio website with serverless backend for contact form",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "portfolio",
+    "vercel",
+    "serverless"
+  ],
+  "author": "Sabiyy",
+  "license": "ISC",
+  "dependencies": {
+    "nodemailer": "^6.9.11"
+  }
+}
